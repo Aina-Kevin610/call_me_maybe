@@ -1,0 +1,26 @@
+[project]
+name = "maybe"
+version = "0.1.0"
+description = "call me maybe project"
+readme = "README.md"
+authors = [
+    { name = "airandri", email = "airandri@student.42antananarivo.mg" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "flake8>=7.5.0",
+    "llm-sdk>=1.0.1",
+    "mypy>=2.4.1",
+    "numpy>=2.5.3",
+    "pydantic>=2.14.2",
+]
+
+[tool.uv.sources]
+llm-sdk = { path = "./llm_sdk" }
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"

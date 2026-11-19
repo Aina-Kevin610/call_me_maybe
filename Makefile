@@ -4,7 +4,10 @@ export UV_PROJECT_ENVIRONMENT=$(DIR)/venv
 export HF_HOME=$(DIR)/llm
 
 run: install
-	uv run python3 -m src
+	uv run python3 -m src \
+	--functions_definition data/input/functions_definition.json \
+	--input data/input/function_calling_tests.json \
+	--output data/output/function_calls.json
 
 install:
 	uv sync

@@ -1,16 +1,21 @@
 import numpy as np
+import ast
+import sys
 from llm_sdk import Small_LLM_Model
 
 
+def parser(calling: str, definition: str) -> list[dict[str]] | list[dict[str]]:
+    with open(calling, 'r') as c:
+        prompt = ast.literal_eval(c.read())
+
+    with open(definition, 'r') as d:
+        definition = ast.literal_eval(d.read())
+
+    return prompt, definition
+
+
 def main():
-    llm = Small_LLM_Model()
-    prompt = "repond avec un fichier json contenant [name, description, parametres(avec ses type en dict)], voici la question [What is the sum of 2 and 3?]"
-    ids = llm.encode(prompt)[0].tolist()
-    for _ in range(150):
-        logits = llm.get_logits_from_input_ids(ids)
-        next_t = np.argmax(logits)
-        ids.append(next_t)
-    print(llm.decode(ids))
+    prompt, definition = parser(sys.argv[4], sys.argv[2])
 
 
 if __name__ == "__main__":

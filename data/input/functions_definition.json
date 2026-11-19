@@ -31,7 +31,7 @@
     "description": "Reverse a string and return the reversed result.",
     "parameters": {
       "s": {
-        "type": "string"
+        "type": "strsing"
       }
     },
     "returns": {

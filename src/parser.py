@@ -1,8 +1,10 @@
 import ast
+import sys
 from typing import Any
 
 
 POSSIBLE_TYPE = ["bool", "int", "float", "double", "string", "number"]
+POSSIBLE_KEY = ["name", "description", "parameters", "returns"]
 
 
 def check_type(data: dict[str, Any]) -> None:
@@ -16,12 +18,15 @@ def check_type(data: dict[str, Any]) -> None:
         TypeError: in case of the parameters value is invalid
 
     """
-    if data["returns"]["type"].lower() not in POSSIBLE_TYPE:
-        raise TypeError(f"return value of {data["name"]} is not correct")
     param = data["parameters"]
     for key, value in param.items():
+        if "type" not in [key.lower() for key in value.keys()] or len(value) != 1:
+            raise TypeError(f"[{data["name"]}] key '{key}' not valid")
+    for key, value in param.items():
         if value["type"].lower() not in POSSIBLE_TYPE:
-            raise TypeError(f"[{data["name"]}] '{key}' type not valid")
+            raise TypeError(f"[{data["name"]}] '{key}:{value}' type not valid")
+    if data["returns"]["type"].lower() not in POSSIBLE_TYPE:
+            raise TypeError(f"return value of {data["name"]} is not correct")
 
 
 def parser(calling: str, definition: str) -> list[dict[str]] | list[dict[str]]:
@@ -43,7 +48,12 @@ def parser(calling: str, definition: str) -> list[dict[str]] | list[dict[str]]:
     try:
         for type in definition:
             check_type(type)
+            if len(type) != 4:
+                raise TypeError("json not valid (lenght)")
+            if set(POSSIBLE_KEY) != set([key for key in type.keys()]):
+                raise TypeError(f"json not valid (key)")
     except TypeError as e:
         print("ERROR - ", e)
+        sys.exit(1)
 
     return prompt, definition

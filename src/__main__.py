@@ -3,6 +3,7 @@ from typing import Any
 import sys
 from llm_sdk import Small_LLM_Model
 from .parser import parser
+from pprint import pprint
 
 
 def read(prompt: str, llm: Small_LLM_Model) -> list[int]:
@@ -24,7 +25,8 @@ def main():
 
     llm = Small_LLM_Model()
 
-    output("output", definition)
+    pprint(definition)
+    # output("output", result)
 
     
 
